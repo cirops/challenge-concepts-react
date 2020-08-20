@@ -6,18 +6,18 @@ import "./styles.css";
 function App() {
   const [repositories, setRepositories] = useState([]);
   useEffect(() => {
-    api.get("/repositories").then((response) => {
+    api.get("repositories").then((response) => {
       setRepositories(response.data);
-    }, []);
-  });
+    });
+  }, []);
 
   async function handleAddRepository() {
     const newRepo = {
-      url: "https://github.com/josepholiveira",
-      title: `Desafio ReactJS`,
+      url: "https://github.com/cirops",
+      title: `Desafio ReactJS ${Date.now()}`,
       techs: ["React", "Node.js"],
     };
-    const response = await api.post("/repositories", newRepo);
+    const response = await api.post("repositories", newRepo);
 
     setRepositories([...repositories, response.data]);
   }
