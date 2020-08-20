@@ -13,19 +13,24 @@ function App() {
 
   async function handleAddRepository() {
     const newRepo = {
-      title: `JS Repo ${Date.now()}`,
-      url: "https://github.com/cirops",
-      techs: ["Node", "JS", "NodeJS"],
+      url: "https://github.com/josepholiveira",
+      title: `Desafio ReactJS`,
+      techs: ["React", "Node.js"],
     };
-    api.post("/repositories", newRepo).then((response) => {
-      setRepositories([...repositories, response.data])
-    });
+    const response = await api.post("/repositories", newRepo);
+
+    setRepositories([...repositories, response.data]);
   }
 
   async function handleRemoveRepository(id) {
-    api.delete(`repositories/${id}`).then(() => {
-      setRepositories(repositories.filter(repo => repo.id !== id));
-    })
+    try {
+      await api.delete(`repositories/${id}`);
+      setRepositories(
+        repositories.filter((repository) => repository.id !== id)
+      );
+    } catch (err) {
+      alert("Error deleting repo!");
+    }
   }
 
   return (
@@ -35,7 +40,9 @@ function App() {
           return (
             <li key={repo.id}>
               {repo.title}
-              <button onClick={() => handleRemoveRepository(repo.id)}>Remover</button>
+              <button onClick={() => handleRemoveRepository(repo.id)}>
+                Remover
+              </button>
             </li>
           );
         })}
